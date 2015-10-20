@@ -69,6 +69,7 @@ var Me = React.createClass({
       <ScrollView style={{backgroundColor:'#eef0f3'}}>
         <View style={[]}>
           <Image style={[styles.header]} source={require("image!bg_me_usericon")} >
+            <Text>13488789409</Text>
           </Image>
          </View>
         <MenuItem 

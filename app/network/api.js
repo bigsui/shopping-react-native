@@ -1,6 +1,6 @@
 
-// var API_ADDRESS = 'http://test.api.bqmart.cn';
-var API_ADDRESS='https://api.bqmart.cn';
+var API_ADDRESS = 'http://lsy.api.bqmart.cn';
+// var API_ADDRESS='https://api.bqmart.cn';
 var DEBUG = true;
 //  public static final String SERVERURL = "https://api.bqmart.cn";
 //	public static final String SERVERURL = "http://test.api.bqmart.cn";

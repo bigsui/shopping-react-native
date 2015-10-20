@@ -68,8 +68,9 @@ var Adviews = React.createClass({
     var advViews = [];
     var advs = this.props.advs;
     for(var i = 0; i < advs.length; i++){
+     var ad = advs[i];
       advViews.push(
-        <TouchableHighlight onPress={()=>this._loadWeb(advs[i].title,advs[i].url)}>
+        <TouchableHighlight onPress={()=>this._loadWeb(ad.title,ad.url)}>
           <View>
             <View style={{height:10,backgroundColor:'#eef0f3'}} />
             <Image style={[styles.adv]} source={{uri:advs[i].image_path}} />
@@ -126,16 +127,16 @@ var home = React.createClass({
   	var service1 = [];
     var service2 = [];
     var services = this.state.services;
-    
+    //可以使用flex 布局
 	  for(var i = 0; i < 3; i++){
       service1.push(
-        <ItemBlock  width={this.state.item_width} service={services[i]}/>
+        <ItemBlock  key = {i} width={this.state.item_width} service={services[i]}/>
       );
     };
 
     for(var i = 3; i < services.length; i++){
       service2.push(
-        <ItemBlock  width={this.state.item_width} service={services[i]}/>
+        <ItemBlock  key = {i} width={this.state.item_width} service={services[i]}/>
       );
     };
 
@@ -148,7 +149,7 @@ var home = React.createClass({
           <View style={styles.itemRow}>
             {service2}
           </View>
-          <Adviews advs={this.state.advs}/>
+          <Adviews advs={this.state.advs} navigator={this.props.navigator}/>
   		</ScrollView>
   	);
   },
