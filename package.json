@@ -1,0 +1,14 @@
+{
+  "name": "bqseller",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh"
+  },
+  "dependencies": {
+    "react-native": "^0.12.0",
+    "react-native-refresher": "^0.1.1",
+    "react-native-swiper": "^1.3.0",
+    "react-timer-mixin": "^0.13.3"
+  }
+}
