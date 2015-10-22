@@ -16,7 +16,9 @@ var {
   	Text,
     ScrollView,
     Image,
+    LinkingIOS,
     TouchableHighlight,
+    ActionSheetIOS,
     NavigatorIOS,
 } = React;
 
@@ -63,6 +65,11 @@ var Me = React.createClass({
       });
   },
 
+  _call:function(){
+    LinkingIOS.openURL('tel://4007008780');
+    alert("");
+  },
+
   render: function() {
     var thiz = this;
     return (
@@ -72,21 +79,32 @@ var Me = React.createClass({
             <Text>13488789409</Text>
           </Image>
          </View>
+        
         <MenuItem 
           title='地址管理'
           onClick={function(){thiz._addNavigator(AddresManager,"地址管理")}}/>
+        
         <MenuItem 
           title='我的订单' 
           margin2Top='1'
           onClick={function(){thiz._addNavigator(OrderManager,"订单列表")}}/>
+       
         <MenuItem 
           title='我的红包' 
           margin2Top='1'
           onClick={function(){thiz._addNavigator(CouponManager,"红包")}}/>
+        
         <MenuItem 
           title='我的贝壳' 
           margin2Top='1' 
           onClick={function(){thiz._addNavigator(ShellManager,"我的贝壳")}}/>
+
+        <TouchableHighlight 
+          style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#ffffff',height:45,marginTop:30}} 
+          underlayColor="#dad9d7" onPress={()=>alert("拨打电话")}>
+         <Text >拨打客服400-700-8780</Text>
+        </TouchableHighlight>
+
       </ScrollView>
     );
   },

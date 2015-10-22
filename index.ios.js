@@ -6,7 +6,7 @@
 
 var React = require('react-native');
 var Login = require('./app/page/login');
-var Home = require('./app/page/home');
+var Home = require('./app/page/home/index');
 var Market = require('./app/page/market');
 var ShoppingCart = require('./app/page/shoppingcart');
 var Me = require('./app/page/me');
@@ -40,7 +40,7 @@ var bqseller = React.createClass({
     });
   },
 
-   _addNavigator: function(component, title){
+  _addNavigator: function(component, title){
     var data = null;
     return <NavigatorIOS
       style={{flex:1}}
@@ -86,6 +86,7 @@ var bqseller = React.createClass({
 
             <TabBarIOS.Item
               title="购物车"
+              badge="4"
               icon={require("image!icon_bottomtag_cart_n")}
               selected={this.state.selectedTab ==='shoppingcart'}
               onPress={this._selectTab.bind(this,'shoppingcart')}
@@ -107,23 +108,5 @@ var bqseller = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#EE7700',
-  },
-  row:{
-    flexDirection:'row',
-  },
-  title:{
-    color: '#ffffff',
-  },
-  actionBar: {
-    height:49,
-    alignItems:'center',
-    justifyContent: 'center',
-    backgroundColor: '#6bb967',
-  }
-});
 
 AppRegistry.registerComponent('bqseller', () => bqseller);

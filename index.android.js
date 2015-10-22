@@ -6,7 +6,7 @@
 
 var React = require('react-native');
 var Login = require('./app/page/login');
-var Home = require('./app/page/home');
+var Home = require('./app/page/home/index');
 
 var {
   AppRegistry,
