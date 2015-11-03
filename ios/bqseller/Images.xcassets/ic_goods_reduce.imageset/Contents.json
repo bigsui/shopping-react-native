@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "ic_goods_reduce.png"
+      "filename" : "ic_goods_reduce-1.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ic_goods_reduce.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ic_goods_reduce-2.png",
       "scale" : "3x"
     }
   ],

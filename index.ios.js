@@ -7,7 +7,7 @@
 var React = require('react-native');
 var Login = require('./app/page/login');
 var Home = require('./app/page/home/index');
-var Market = require('./app/page/market');
+var Market = require('./app/page/market/index');
 var ShoppingCart = require('./app/page/shoppingcart');
 var Me = require('./app/page/me');
 

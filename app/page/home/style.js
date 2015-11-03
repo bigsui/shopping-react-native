@@ -12,23 +12,39 @@ var {
     Image,
 } = React;
 
-
-
 var styles = StyleSheet.create({
   container: {
-    paddingBottom:200,
+    marginBottom:115,
   },
   //slider
+  row:{
+    flexDirection:'row',
+  },
   wrapper: {
     height:125,
+  },
+  flex1:{
+    flex:1,
+  },
+  center:{
+    alignItems:'center',
+    justifyContent: 'center',
   },
   slide: {
     height:125,
     resizeMode: Image.resizeMode.stretch,
   },
   adv: {
-    height:175,
+    height:145,
     resizeMode: Image.resizeMode.stretch,
+  },
+  hotLine:{
+    height:1,
+    backgroundColor:'#333333',
+  },
+  hottitle:{
+    fontSize: 16,
+    textAlign: 'center',
   },
   container_bqservice:{
     padding:10,
@@ -55,7 +71,5 @@ var styles = StyleSheet.create({
   },
 
 });
-
-
 
 module.exports = styles;
