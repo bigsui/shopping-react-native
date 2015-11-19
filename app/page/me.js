@@ -10,6 +10,9 @@ var AddresManager = require('./address/addresslist');
 var OrderManager = require('./order/orderlist');
 var CouponManager = require('./coupon/couponlist');
 var ShellManager = require('./shell/shell');
+var store = require('react-native-simple-store');
+
+
 var {
   	StyleSheet,
   	View,
@@ -48,10 +51,15 @@ var MenuItem = React.createClass({
 var Me = React.createClass({
   getInitialState: function() {
     return {
+      user:null,
     };
   },
 
   componentDidMount: function() {
+    store.get('user').then((userdata)=>{
+      this.setState({
+        user:userdata,
+    })});
   },
 
   _addNavigator: function(component, title){
@@ -67,11 +75,14 @@ var Me = React.createClass({
 
   _call:function(){
     LinkingIOS.openURL('tel://4007008780');
-    alert("");
   },
 
   render: function() {
     var thiz = this;
+    var name="";
+    if(this.state.user){
+      name = this.state.user.user_name;
+    }
     return (
       <ScrollView style={{backgroundColor:'#eef0f3'}}>
         <View style={[]}>
@@ -79,7 +90,7 @@ var Me = React.createClass({
             <View >
                 <Image style={[styles.logoSize]}
                        source={require("image!ic_logo_circle")} />
-              <Text >13488789409</Text>
+              <Text >{name}</Text>
             </View>
           </Image>
          </View>
@@ -109,7 +120,7 @@ var Me = React.createClass({
 
         <TouchableHighlight 
           style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#ffffff',height:45,marginTop:30}} 
-          underlayColor="#dad9d7" onPress={()=>alert("拨打电话")}>
+          underlayColor="#dad9d7" onPress={()=>this._call()}>
          <Text >拨打客服400-700-8780</Text>
         </TouchableHighlight>
 
@@ -139,7 +150,6 @@ var styles = StyleSheet.create({
         width:40,
         resizeMode: Image.resizeMode.contain,
     },
-
 });
 
 module.exports = Me;

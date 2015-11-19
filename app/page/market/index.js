@@ -38,6 +38,7 @@ var Market = React.createClass({
       goodsList:{
         dataSource:new ListView.DataSource({rowHasChanged:(row1,row2) =>row1!==row2}),
         loaded:false,
+        loadingmore:false,
       },
     };
   },
@@ -103,14 +104,17 @@ var Market = React.createClass({
   },
 
   renderFooter: function() {
-    if (Platform.OS === 'ios') {
-      return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
-    } else {
-      return (
-        <View  style={{alignItems: 'center'}}>
-          <ProgressBarAndroid styleAttr="Large"/>
-        </View>
-      );
+    if(this.state.goodsList.loadingmore){
+        if (Platform.OS === 'ios') {
+          return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
+        } else {
+          return (
+            <View  style={{alignItems: 'center'}}>
+              <ProgressBarAndroid styleAttr="Large"/>
+            </View>);
+         }
+    }else{
+        return <Text style={{color:'#626770'}}>全部商品加载完毕</Text>;
     }
   },
 

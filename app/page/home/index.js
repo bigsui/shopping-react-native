@@ -38,7 +38,7 @@ var home = React.createClass({
   getInitialState: function() {
     return {
       store_id: 8805,
-      loaded:true,
+      loaded:false,
       banners:[],
       services:[],
       hotgoods:[],
@@ -48,13 +48,12 @@ var home = React.createClass({
 
   componentDidMount: function() {
     this.getStoreMunu();
-    this.getRecommendation();
   },
 
   getStoreMunu:function(){
   	var store_id=this.state.store_id;
   	var p9 = "app";
-  	var url ="http://lsy.api.bqmart.cn/stores/menu.json?store_id=8805&p9=app";
+  	var url ="https://api.bqmart.cn/stores/menu.json?store_id=8805&p9=app";
   	fetch(url)
       .then((response) => response.json())
       .then((responseData) => {
@@ -64,38 +63,40 @@ var home = React.createClass({
           advs:responseData.result.advs,
           loaded:true,
         });
+        this.getRecommendation();
       })
       .done();
   },
 
   getRecommendation:function(){
     var storeid = this.state.store_id;
-    var url = "http://lsy.api.bqmart.cn/goods/relatedrecommend.json?store_id=8805&type=seckill&page=1&limit=40";
+    var url = "https://api.bqmart.cn/goods/relatedrecommend.json?store_id=8805&type=seckill&page=1&limit=40";
     fetch(url)
       .then((response) => response.json())
       .then((responseData) => {
-        //alert(JSON.stringify(responseData.result[0]));
         this.setState({
-          //dataSource:this.dataSource.cloneWithRows(responseData.result),
           hotgoods:responseData.result,
         });
       }).done();
   },
 
   renderContent: function() {
+    if(!this.state.loaded){
+      return (<Text style={Styles.hottitle}> LOADING </Text>);
+    }
   	return (
   		<ScrollView style={[Styles.container]}>
-          <Slider banners={this.state.banners} navigator={this.props.navigator}/>
-          <BqService
+            <Slider banners={this.state.banners} navigator={this.props.navigator}/>
+            <BqService
                 collumnNum={3}
                 services = {this.state.services}/>
-          <ADViews advs={this.state.advs} navigator={this.props.navigator}/>
-          <View style={[Styles.row,Styles.center]}>
-            <View style={[Styles.hotLine,Styles.flex1]}/>
-            <Text style={Styles.hottitle}> 精品推荐 </Text>
-            <View style={[Styles.hotLine,Styles.flex1]}/>
-          </View>
-          <HotGoods
+            <ADViews advs={this.state.advs} navigator={this.props.navigator}/>
+            <View style={[Styles.row,Styles.center]}>
+                <View style={[Styles.hotLine,Styles.flex1]}/>
+                <Text style={Styles.hottitle}> 精品推荐 </Text>
+                <View style={[Styles.hotLine,Styles.flex1]}/>
+            </View>
+            <HotGoods
               collumnNum={2}
               hotgoods ={this.state.hotgoods}/>
   		</ScrollView>

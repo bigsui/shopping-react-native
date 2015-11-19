@@ -22,7 +22,7 @@ var Category = React.createClass({
     return {
       categoryIndex:0,
       dataSource:ds.cloneWithRows(this._genRows(0)),
-      loaded:true,
+      loaded:false,
     };
   },
 

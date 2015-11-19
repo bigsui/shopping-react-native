@@ -25,10 +25,13 @@
 
 ### 四、shopping-react-native demo
 
-图片轮播使用的是三方组件react-native-swiper,我们启动npm命令行，在项目的根目录使用如下命令安装模块。
+使用的三方组件,我们启动npm命令行，在项目的根目录使用如下命令安装模块。
 	
 	$ npm install react-native-swiper --save
 	$ npm i react-timer-mixin --save
+	$ npm install react-native-store --save
+	$ npm install react-native-simple-store
+	$ npm install react-native-camera@latest --save//扫码
 	
 ### 实战内容
 

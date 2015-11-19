@@ -49,8 +49,6 @@ var login = React.createClass({
     }
     Util.post(API.getSmsCode(),{'tel':phone,'type':'verifiycode'},function (ret){
       alert(ret.msg);
-      if(ret.code==0){
-      }
     });
   },
 
@@ -65,30 +63,21 @@ var login = React.createClass({
       alert("验证码为4位数字");
       return;
     }
-    /*alert(this.state.logined);
-    Util.get(API.login()+"?user_name="+phone+"&code="+code+"&type=verifiycode",function (ret){
-       
-      if(ret.code==0){
-        // alert('登陆成功-');
-         alert(this.state.logined);
-        this.setState({logined:true});//无效
-       
-      }else{
-        alert(ret.msg);
-      }
-    });*/
 
-    fetch(API.login()+"?user_name="+phone+"&code="+code+"&type=verifiycode")
+    fetch(API.LOGIN+"?user_name="+phone+"&code="+code+"&type=verifiycode")
       .then((response) => response.json())
       .then((responseData) => {
         if(responseData.code==0){
-          user_id=responseData.data.user_id;
-          access_token=responseData.data.access_token;
-          this.setState({logined:true});
+          this._loginSucc(responseData.data);
+        }else{
+          alert("验证码错误");
         }
-        alert(responseData.msg);
       })
       .done();
+  },
+
+  _loginSucc:function(userData){
+      this.props.loginResult(userData);
   },
 
   logout:function(){
@@ -153,7 +142,6 @@ var login = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-    marginTop:50,
     backgroundColor: '#57a84a',
     paddingLeft:40,
     paddingRight:40,

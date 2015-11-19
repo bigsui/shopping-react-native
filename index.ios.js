@@ -6,107 +6,49 @@
 
 var React = require('react-native');
 var Login = require('./app/page/login');
-var Home = require('./app/page/home/index');
-var Market = require('./app/page/market/index');
-var ShoppingCart = require('./app/page/shoppingcart');
-var Me = require('./app/page/me');
+var Index = require('./app/page/index');
+var store = require('react-native-simple-store');
 
 var {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  TabBarIOS,
-  NavigatorIOS,
 } = React;
 
 // StatusBarIOS.setStyle('light-content');
 
-var bqseller = React.createClass({
+var app = React.createClass({
   getInitialState: function() {
     return{
-      selectedTab:'home',
       logined:false,
-      showIndex: {
-        height:0,
-        opacity:0
-      },
     };
-  },
-
-  _selectTab: function(tabName){
-    this.setState({
-      selectedTab:tabName,
-    });
-  },
-
-  _addNavigator: function(component, title){
-    var data = null;
-    return <NavigatorIOS
-      style={{flex:1}}
-      barTintColor='#6bb967'
-      titleTextColor="#fff"
-      tintColor="#fff"
-      translucent={false}
-      initialRoute={{
-          component: component,
-          title: title,
-          passProps:{
-            data: data
-          }
-        }} />;
   },
 
   _renderLogin:function(){
     return (
-        <Login/>
+        <Login loginResult={(userData)=>this._loginSucc(userData)}/>
+      );
+  },
+
+  _loginSucc:function(userData){
+    store.save('user', userData);
+    this.setState({
+      logined:true,
+    });
+  },
+
+  _renderIndex:function(){
+    return (
+        <Index/>
       );
   },
 
   render: function() {
-    return (
-          <TabBarIOS >
-            <TabBarIOS.Item
-              title="首页"
-              icon={require("image!icon_bottomtag_home_n")}
-              selected={this.state.selectedTab ==='home'}
-              onPress={this._selectTab.bind(this,'home')}
-              >
-              {this._addNavigator(Home,'首页')}
-            </TabBarIOS.Item>
+    if(this.state.logined){
+        return this._renderIndex();
+    }else{
+        return this._renderLogin();
+    }
+  },
 
-            <TabBarIOS.Item
-              title="闪送超市"
-              icon={require("image!icon_bottomtag_market_n")}
-              selected={this.state.selectedTab ==='market'}
-              onPress={this._selectTab.bind(this,'market')}
-              >
-              {this._addNavigator(Market,'闪送超市')}
-            </TabBarIOS.Item>
-
-            <TabBarIOS.Item
-              title="购物车"
-              badge="4"
-              icon={require("image!icon_bottomtag_cart_n")}
-              selected={this.state.selectedTab ==='shoppingcart'}
-              onPress={this._selectTab.bind(this,'shoppingcart')}
-              >
-              {this._addNavigator(ShoppingCart,'购物车')}
-            </TabBarIOS.Item>
-
-            <TabBarIOS.Item
-              title="个人中心"
-              icon={require("image!icon_bottomtag_me_n")}
-              selected={this.state.selectedTab ==='me'}
-              onPress={this._selectTab.bind(this,'me')}
-              >
-              {this._addNavigator(Me,'个人中心')}
-            </TabBarIOS.Item>
-
-          </TabBarIOS>
-    );
-  }
 });
 
-
-AppRegistry.registerComponent('bqseller', () => bqseller);
+AppRegistry.registerComponent('bqseller', () => app);
