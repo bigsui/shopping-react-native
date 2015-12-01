@@ -1,6 +1,8 @@
 'use strict';
 var React = require('react-native');
 var Util = require('../../util/util');
+var GoodsDetail = require('../goodsdetail');
+
 var {
     View,
     Text,
@@ -37,6 +39,17 @@ var Product = React.createClass({
 });
 
 var HotGoods = React.createClass({
+     _goodsDetail:function (product) {
+        this.props.navigator.push({
+            title: '商品详情',
+            rightButtonTitle:'分享',
+            component: GoodsDetail,
+            passProps:{
+              intent: product,
+            }
+          });
+    },
+
     render: function(){
         var collumnNum = this.props.collumnNum;
         var products = this.props.hotgoods;
@@ -47,12 +60,15 @@ var HotGoods = React.createClass({
         };
         var itemviews = [];
         for(var ii = 0;ii<products.length;ii++){
+            var product = products[ii];
             itemviews.push(
-                <View style={[styles.center,size]} key={ii}>
-                    <Product
-                        itemWidth ={itemWidth-15}
-                        data={products[ii]} />
-                </View>
+                <TouchableHighlight onPress={()=>this._goodsDetail(product)}>
+                    <View style={[styles.center,size]} key={ii}>
+                        <Product
+                            itemWidth ={itemWidth-15}
+                            data={products[ii]} />
+                    </View>
+                </TouchableHighlight>
             );
         }
 

@@ -6,7 +6,7 @@
  */
 'use strict';
 var React = require('react-native');
-
+var HTMLView = require('react-native-htmlview');
 var {
   	StyleSheet,
   	View,

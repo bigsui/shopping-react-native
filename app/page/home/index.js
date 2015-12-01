@@ -98,6 +98,7 @@ var home = React.createClass({
             </View>
             <HotGoods
               collumnNum={2}
+              navigator={this.props.navigator}
               hotgoods ={this.state.hotgoods}/>
   		</ScrollView>
   	);

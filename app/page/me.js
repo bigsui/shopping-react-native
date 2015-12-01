@@ -86,11 +86,11 @@ var Me = React.createClass({
     return (
       <ScrollView style={{backgroundColor:'#eef0f3'}}>
         <View style={[]}>
-          <Image style={[styles.header,styles.center]} source={require("image!bg_me_usericon")} >
-            <View >
+          <Image style={[styles.header,styles.center,{backgroundColor:'#6bb967'}] } >
+            <View style={styles.transparent}>
                 <Image style={[styles.logoSize]}
                        source={require("image!ic_logo_circle")} />
-              <Text >{name}</Text>
+              <Text style={styles.userName}>{name}</Text>
             </View>
           </Image>
          </View>
@@ -137,6 +137,13 @@ var styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
   },
+  userName:{
+    color:'#ffffff',
+    fontSize:20,
+  },
+  transparent:{
+     backgroundColor:'#00000000',
+  },
   header: {
     height: 100,
   },
@@ -145,11 +152,11 @@ var styles = StyleSheet.create({
     width:20,
     resizeMode: Image.resizeMode.contain,
   },
-    logoSize: {
+  logoSize: {
         height:40,
         width:40,
         resizeMode: Image.resizeMode.contain,
-    },
+  },
 });
 
 module.exports = Me;

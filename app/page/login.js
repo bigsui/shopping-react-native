@@ -7,38 +7,51 @@
 var React = require('react-native');
 var API = require('../network/api');
 var Util = require('../util/util');
-var user_id ="1234";
-var access_token="12345";
+var TimerMixin = require('react-timer-mixin');
+var Store = require('react-native-simple-store');
 
 var {
   AppRegistry,
   StyleSheet,
   Text,
+  Image,
   View,
   TouchableHighlight,
   TextInput,
 } = React;
 
 var login = React.createClass({
+  mixins: [TimerMixin],
+
   getInitialState: function() {
     return {
       phone: "",
       code: "",
       logined: false,
-      secondsElapsed: -1,
+      secondsElapsed: 0,
     };
   },
 
+  componentDidMount: function() {
+    Store.get('user').then((userdata)=>{
+      this.setState({
+        phone:userdata.user_name,
+    })});
+  },
+
   tick: function() {
-    if(this.state.secondsElapsed==-1){
-      this.setState({secondsElapsed: 10});
-    }else if(this.state.secondsElapsed==0){
-      clearInterval(interval);
-      this.setState({secondsElapsed: -1});
-    }else {
-      this.setState({secondsElapsed: this.state.secondsElapsed -1});
-      clearInterval(interval);
+    var secondsElapsed = this.state.secondsElapsed-1;
+    if(secondsElapsed==0){
+      this.setState({secondsElapsed: 0});
+      return;
     }
+    this.setTimeout(
+        () => {
+          this.setState({secondsElapsed: secondsElapsed});
+          this.tick();
+        },
+        500
+    );
   },
 
   getCode: function() {
@@ -47,8 +60,13 @@ var login = React.createClass({
       alert("请输入正确的手机号码");
       return;
     }
+    var thiz = this;
     Util.post(API.getSmsCode(),{'tel':phone,'type':'verifiycode'},function (ret){
-      alert(ret.msg);
+      if(ret.code==0){
+        thiz.setState({secondsElapsed: 60});
+        thiz.tick();
+      }
+      Util.log(ret.msg);
     });
   },
 
@@ -77,7 +95,7 @@ var login = React.createClass({
   },
 
   _loginSucc:function(userData){
-      this.props.loginResult(userData);
+    this.props.loginResult(userData);
   },
 
   logout:function(){
@@ -98,38 +116,47 @@ var login = React.createClass({
           <Text style={{alignItems:'center',justifyContent:'center'}}>欢迎你:user_id:{user_id} access_token:{access_token}</Text>
           <TouchableHighlight style={[styles.btn,styles.marginTop30]} onPress={this.logout}>
             <Text style={{color:'#fff'}}>退出</Text>
-          </TouchableHighlight>  
+          </TouchableHighlight>
         </View>);
   },
 
   renderLogin:function(){
-    return (
-      <View style={[styles.container]}>
-        <View style={[styles.inputRow]}>
-          <Text style={styles.label}>手机号</Text>
-          <TextInput  
-            style={styles.input} 
-            placeholder="请输入11位手机号" 
-            onChangeText={(text) => this.setState({phone: text})}/>
-        </View>
-        <View style={[styles.line]} />
-        <View style={[styles.inputRow,{marginTop:5}]}>
-          <Text style={styles.label}>验证码</Text>
-          <TextInput 
-            style={styles.input} 
-            placeholder="4位数字" 
-            onChangeText={(text) => this.setState({code: text})}/>
-          <TouchableHighlight style={[styles.btn,{width:80,height:25}]} onPress={this.getCode}>
-            <Text style={{color:'#fff',fontSize:12}}>获取验证码</Text>
-          </TouchableHighlight>
 
+    var getCode_text = this.state.secondsElapsed==0?'获取验证码':(this.state.secondsElapsed+'秒后重试');
+
+    return (
+      <Image style={[Util.size,styles.container]} source={require("image!bg_login")}>
+
+        <View style={styles.loginform}>
+        <Text style={[styles.title,{marginTop:40}]} >用户登陆</Text>
+          <View style={[styles.inputRow,{marginTop:90}]}>
+            <Text style={styles.label} >手机号</Text>
+            <TextInput
+              keyboardType ='numeric'
+              clearButtonMode='while-editing'
+              style={styles.input}
+              placeholder="请输入11位手机号"
+              onChangeText={(text) => this.setState({phone: text})}/>
+          </View>
+          <View style={[styles.line]} />
+          <View style={[styles.inputRow,{marginTop:10}]}>
+            <Text style={styles.label}>验证码</Text>
+            <TextInput
+              keyboardType ='numeric'
+              clearButtonMode='while-editing'
+              style={styles.input}
+              placeholder="4位数字"
+              onChangeText={(text) => this.setState({code: text})}/>
+            <TouchableHighlight style={[styles.btn,{width:80,height:30}]} underlayColor='#0057a84a' onPress={this.getCode}>
+              <Text style={{color:'#fff',fontSize:12}}>{getCode_text}</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={[styles.line,{marginTop:2}]} />
+          <TouchableHighlight style={[styles.btn,styles.marginTop30]} underlayColor='#0057a84a' onPress={this.login}>
+            <Text style={{color:'#fff'}}>登录</Text>
+          </TouchableHighlight>
         </View>
-        <View style={[styles.line,{marginTop:2}]} />
-        <TouchableHighlight style={[styles.btn,styles.marginTop30]} onPress={this.login}>
-          <Text style={{color:'#fff'}}>登录</Text>
-        </TouchableHighlight>   
-        <Text style={{color:'#fff',fontSize:12}}>test:{this.state.secondsElapsed}秒</Text>
-      </View>);
+      </Image>);
     },
     
   render: function() {
@@ -142,11 +169,21 @@ var login = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-    backgroundColor: '#57a84a',
+    flex:1,
+  },
+  loginform:{
+    backgroundColor:'#00000000',
     paddingLeft:40,
     paddingRight:40,
-    paddingTop:90,
+  },
+  transparent:{
+     backgroundColor:'#00000000',
+  },
+  title: {
+    color:'#ffffff',
+    fontSize:20,
     flex:1,
+    textAlign:'center',
   },
   action:{
     height:50,
@@ -168,6 +205,7 @@ var styles = StyleSheet.create({
     marginRight:10,
   },
   inputRow:{
+    backgroundColor:'00000000',
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'center',
@@ -175,6 +213,7 @@ var styles = StyleSheet.create({
   input:{
     height:35,
     borderColor:'#ccc',
+    color:'#fff',
     flex:1,
     fontSize:14,
   },
@@ -184,7 +223,6 @@ var styles = StyleSheet.create({
     color:'ffffff'
   },
   btn:{
-    marginTop:10,
     height:35,
     backgroundColor:'#4d796e',
     justifyContent:'center',
