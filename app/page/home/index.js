@@ -14,7 +14,7 @@ var Loading = require('../loading');
 var Web = require('../web');
 
 //自定义组件
-var Slider = require('./slidebanner');
+var Slider = require('./SlideBanner');
 var ADViews = require('./adview');
 var BqService = require('./bqservice');
 var HotGoods = require('./hotgoods');
